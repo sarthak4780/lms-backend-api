@@ -1,22 +1,25 @@
 const express = require("express");
+const cors = require("cors");
+
+const authRoutes = require("./modules/auth/auth.routes");
+const studentRoutes = require("./modules/students/student.routes");
+const courseRoutes = require("./modules/courses/course.routes");
+const instructorRoutes = require("./modules/instructors/instructor.routes");
+const enrollmentRoutes = require("./modules/enrollments/enrollment.routes");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("LMS Backend API is running");
 });
 
-app.use("/api/v1/students", require("./modules/students/student.routes"));
-app.use("/api/v1/courses", require("./modules/courses/course.routes"));
-app.use("/api/v1/instructors", require("./modules/instructors/instructor.routes"));
-app.use("/api/v1/enrollments", require("./modules/enrollments/enrollment.routes"));
-app.use("/api/v1/lessons", require("./modules/lessons/lesson.routes"));
-
-app.get(
-  "/api/v1/courses/:id/lessons",
-  require("./modules/lessons/lesson.controller").getLessonsByCourse
-);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/students", studentRoutes);
+app.use("/api/v1/courses", courseRoutes);
+app.use("/api/v1/instructors", instructorRoutes);
+app.use("/api/v1/enrollments", enrollmentRoutes);
 
 module.exports = app;
